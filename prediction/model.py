@@ -6,4 +6,3 @@ class Model(ABC):
     def predict(self, data):
         pass
 
-    

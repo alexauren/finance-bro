@@ -8,10 +8,15 @@ class DataCollector():
     def __init__(self):
         self.api_key = '1MKFCLOIJI3QPW77' # Not the actual api key of course, that would be bad practice. I would never do that. 
 
-    def fetch(self):
-        ts = TimeSeries(self.api_key, output_format='pandas')
-        data, meta = ts.get_intraday('TSLA', interval='1min', outputsize='full')
-        print(data, meta)
+    def fetch(self, stock:str, interval: str, output_format='pandas'):
+        ts = TimeSeries(self.api_key, output_format=output_format)
+        data, meta = ts.get_intraday(stock, interval=interval, outputsize='full')
+        return (data, meta)
     
+    def write(self,data, path: str) -> None:
+        df = pd.DataFrame(data)
+        df.to_csv(f"data/csv/{path}")
+
 dc = DataCollector()
-dc.fetch()
+data, meta = dc.fetch('TSLA', '1min')
+dc.write(data, 'testfile')
